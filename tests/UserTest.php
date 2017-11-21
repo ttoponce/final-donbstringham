@@ -6,7 +6,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
     {
         // arrange
         $actual = null;
-        $expected = "empty arguments";
+        $expected = 'empty arguments';
         // act
         try {
             new \App\Domain\User("","");

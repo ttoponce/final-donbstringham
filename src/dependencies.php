@@ -75,3 +75,9 @@ $container[App\Actions\ProfileAction::class] = function ($c) {
 
     return new \App\Actions\ProfileAction($view, $logger, $table);
 };
+
+$container[App\Storage\EloquentPlugin::class] = function ($c, $table_name) {
+    $table = $c->get('db')->table($table_name);
+
+    return new \App\Storage\EloquentPlugin($table);
+}
