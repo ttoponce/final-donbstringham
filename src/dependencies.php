@@ -80,4 +80,4 @@ $container[App\Storage\EloquentPlugin::class] = function ($c, $table_name) {
     $table = $c->get('db')->table($table_name);
 
     return new \App\Storage\EloquentPlugin($table);
-}
+};

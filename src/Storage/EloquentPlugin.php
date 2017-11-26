@@ -12,17 +12,16 @@ use Illuminate\Database\Query\Builder;
 
 class EloquentPlugin implements AdapterInterface
 {
-    /** @var  $table Builder */
-    protected $table;
+    /** @var  $query Builder */
+    protected $query;
 
-    public function __construct($table)
+    public function __construct(Builder $query)
     {
-        if(empty($table)) {
-            throw new \UnexpectedValueException('$table cannot be empty');
+        if(empty($query)) {
+            throw new \UnexpectedValueException('$query cannot be empty');
         }
 
-        $this->table = $table;
-
+        $this->query = $query;
     }
 
     public function Create($item)
@@ -35,7 +34,7 @@ class EloquentPlugin implements AdapterInterface
             throw new \UnexpectedValueException('$item does not have a getID() method');
         }
 
-        $this->table->insert($item);
+        return $this->query->insertGetId($item->toArray());
     }
 
     public function Remove($ID)
