@@ -27,6 +27,13 @@ class TestClass00 {
     public function GetData() {
         return $this->data;
     }
+
+    public function toArray() {
+        return [
+            'uuid' => $this->ID,
+            'data' => $this->data,
+        ];
+    }
 }
 
 class TestClass01 {
