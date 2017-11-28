@@ -97,4 +97,27 @@ class MemoryPlugin implements AdapterInterface {
 //
 //        return null;
     }
+
+    public function GetByString($string)
+    {
+        $len = count($this->array);
+
+        for ($i=0; $i < $len; $i++) {
+            $reflection = new \ReflectionClass($this->array[$i]);
+            $props = $reflection->getProperties();
+            foreach($props as $prop) {
+                $value = $prop->getValue();
+                if ($value === $string) {
+                    return $this->array[$i];
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    public function Type()
+    {
+        return get_class($this);
+    }
 }

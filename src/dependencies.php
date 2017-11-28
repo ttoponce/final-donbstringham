@@ -81,3 +81,9 @@ $container[App\Storage\EloquentPlugin::class] = function ($c, $table_name) {
 
     return new \App\Storage\EloquentPlugin($table);
 };
+
+$container[App\Storage\UserRepository::class] = function ($c) {
+    $plugin = $c->get(App\Storage\EloquentPlugin::class)($c, 'users');
+
+    return new App\Storage\UserRepository($plugin);
+};

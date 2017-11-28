@@ -8,5 +8,7 @@ interface AdapterInterface {
     public function RemoveAll();
     public function Get($ID);
     public function GetAll();
+    public function GetByString($string);
     public function Modify($ID, $item);
+    public function Type();
 }

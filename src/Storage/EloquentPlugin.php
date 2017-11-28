@@ -14,6 +14,7 @@ class EloquentPlugin implements AdapterInterface
 {
     /** @var  $query Builder */
     protected $query;
+    protected $column_name;
 
     public function __construct(Builder $query)
     {
@@ -21,9 +22,14 @@ class EloquentPlugin implements AdapterInterface
             throw new \UnexpectedValueException('$query cannot be empty');
         }
 
+        $this->column_name = '';
         $this->query = $query;
     }
 
+    /**
+     * @param $item
+     * @return int
+     */
     public function Create($item)
     {
         if (!is_object($item)) {
@@ -60,5 +66,23 @@ class EloquentPlugin implements AdapterInterface
     public function Modify($ID, $item)
     {
         // TODO: Implement Modify() method.
+    }
+
+    public function GetByString($string)
+    {
+        if ($this->column_name === '') {
+            throw new \UnexpectedValueException('$column_name not set');
+        }
+
+        return $this->query->select()->where([$this->column_name], $string)->get();
+    }
+
+    public function SetGetByStringColumn($column_name) {
+        $this->column_name = $column_name;
+    }
+
+    public function Type()
+    {
+        return get_class($this);
     }
 }
