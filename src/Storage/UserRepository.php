@@ -7,10 +7,6 @@ class UserRepository implements RepositoryInterface {
     /** @var  \App\Storage\AdapterInterface */
     protected $adapter;
 
-    public function __construct(AdapterInterface $adapter) {
-        $this->SetAdapter($adapter);
-    }
-
     public function SetAdapter(AdapterInterface $adapter) {
         $this->adapter = $adapter;
         return $this;

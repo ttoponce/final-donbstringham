@@ -9,13 +9,15 @@
 namespace Tests\Storage;
 
 use App\Storage\EloquentPlugin;
-use Doctrine\Instantiator\Exception\UnexpectedValueException;
 use Illuminate\Database\Capsule\Manager;
 
-class TestEloquentPlugin extends \PHPUnit_Framework_TestCase {
+class EloquentPluginTest extends \PHPUnit_Framework_TestCase {
     /** @var $db Manager **/
     protected $db;
 
+    /**
+     *
+     */
     public function setUp() {
         $this->db = new Manager();
         $this->db->addConnection(array(
@@ -44,15 +46,17 @@ class TestEloquentPlugin extends \PHPUnit_Framework_TestCase {
 
     public function testConstructor() {
         // arrange and act
-        $harness = new EloquentPlugin($this->db->table('test_table'));
+        $builder = $this->db->table('test_table');
+        $harness = new EloquentPlugin($builder);
         // assert
-        $this->assertEquals(EloquentPlugin::class, get_class($harness));
+        $this->assertEquals(EloquentPlugin::class, \get_class($harness));
     }
 
     public function testCreateObject00() {
         // arrange
         $expected = 1;
-        $harness = new EloquentPlugin($this->db->table('test_table'));
+        $builder = $this->db->table('test_table');
+        $harness = new EloquentPlugin($builder);
         // act
         $item = new TestClass00('1234abcd', 'foobar');
         $actual = $harness->Create($item);

@@ -1,14 +1,19 @@
 <?php
 /**
  * DIC configuration
+ *
+ * @category CS4350
+ * @package  Src
+ * @author  Don B. Stringham <donstringham@weber.edu>
+ * @license  MIT http://mit.org
+ * @link  http://weber.edu
  */
 
 $container = $app->getContainer();
 
 // view
 $container['view'] = function ($c) {
-    $settings = $c->get('settings');
-    $view = new \Slim\Views\Twig($settings['view']['template_path'], $settings['view']['twig']);
+    $settings = $c->get('settings'); $view = new \Slim\Views\Twig($settings['view']['template_path'], $settings['view']['twig']);
     // Add extensions
     $view->addExtension(new \Slim\Views\TwigExtension($c->get('router'), $c->get('request')->getUri()));
     $view->addExtension(new \Twig_Extension_Debug());
@@ -54,7 +59,7 @@ $container['errorHandler'] = function ($c) {
 };
 
 $container['phpErrorHandler'] = function ($c) {
-    return function ($request, $response, $error) use ($c) {
+    return function ($request, $response, $exception) use ($c) {
         $c->get('logger')->error($exception->getMessage());
         $response->getBody()->rewind();
         return $response->withStatus(500)
@@ -76,14 +81,10 @@ $container[App\Actions\ProfileAction::class] = function ($c) {
     return new \App\Actions\ProfileAction($view, $logger, $table);
 };
 
-$container[App\Storage\EloquentPlugin::class] = function ($c, $table_name) {
-    $table = $c->get('db')->table($table_name);
-
-    return new \App\Storage\EloquentPlugin($table);
+$container[App\Storage\MemoryPlugin::class] = function ($c) {
+    return new App\Storage\MemoryPlugin();
 };
 
 $container[App\Storage\UserRepository::class] = function ($c) {
-    $plugin = $c->get(App\Storage\EloquentPlugin::class)($c, 'users');
-
-    return new App\Storage\UserRepository($plugin);
+    return new App\Storage\UserRepository();
 };
