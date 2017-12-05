@@ -85,6 +85,15 @@ $container[App\Storage\MemoryPlugin::class] = function ($c) {
     return new App\Storage\MemoryPlugin();
 };
 
-$container[App\Storage\UserRepository::class] = function ($c) {
-    return new App\Storage\UserRepository();
+$container[App\Storage\UserRepository::class . 'Eloquent'] = function ($c) {
+    $builder = $c->get('db')->table('users');
+    $adapter = new App\Storage\EloquentPlugin($builder);
+
+    return new App\Storage\UserRepository($adapter);
+};
+
+$container[App\Storage\UserRepository::class . 'Mem'] = function ($c) {
+    $adapter = $c->get(App\Storage\MemoryPlugin::class);
+
+    return new App\Storage\UserRepository($adapter);
 };

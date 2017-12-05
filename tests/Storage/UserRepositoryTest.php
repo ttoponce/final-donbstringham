@@ -29,11 +29,7 @@ class UserRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function testNewUserRepository() {
         // arrange
-        $builder = $this->c->get('db')->table('users');
-        $adapter = new EloquentPlugin($builder); // $this->c->get(MemoryPlugin::class);
-        $actual = $this->c->get(UserRepository::class);
-        // act
-        $actual->SetAdapter($adapter);
+        $actual = $this->c->get(UserRepository::class.'Eloquent');
         // assert
         $this->assertNotNull($actual);
     }
