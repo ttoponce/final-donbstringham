@@ -20,6 +20,11 @@ date_default_timezone_set('UTC');
 // Instantiate the app
 $settings = include __DIR__ . '/../src/settings.php';
 $app = new \Slim\App($settings);
+$app->add(new \Slim\Middleware\Session([
+    'name' => 'web4350_session',
+    'autorefresh' => true,
+    'lifetime' => '1 hour'
+]));
 
 // Set up dependencies
 require __DIR__ . '/../src/dependencies.php';

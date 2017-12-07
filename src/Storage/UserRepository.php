@@ -26,13 +26,17 @@ class UserRepository implements RepositoryInterface {
     }
 
     public function DeleteAll() {}
-    public function Find($ID) {}
+    public function Find($ID) {
+        return $this->adapter->Get($ID);
+    }
+
     public function FindByUsername($username) {
         if ($this->adapter->Type() === \App\Storage\EloquentPlugin::class) {
             $this->adapter->SetGetByStringColumn('email');
         }
-        $user = $this->adapter->GetByString($username);
+        return $this->adapter->GetByString($username);
     }
+
     public function FindAll() {}
     public function Update($ID, $item) {}
 }

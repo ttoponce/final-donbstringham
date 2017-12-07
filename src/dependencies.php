@@ -68,6 +68,11 @@ $container['phpErrorHandler'] = function ($c) {
     };
 };
 
+// Register globally to app
+$container['session'] = function ($c) {
+    return new \SlimSession\Helper;
+};
+
 // classes/objects
 $container[App\Actions\HomeAction::class] = function ($c) {
     return new \App\Actions\HomeAction($c->get('view'), $c->get('logger'));

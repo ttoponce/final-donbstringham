@@ -18,7 +18,7 @@ class EloquentPlugin implements AdapterInterface
 
     public function __construct(Builder $query)
     {
-        if(empty($query)) {
+        if(null === $query) {
             throw new \UnexpectedValueException('$query cannot be empty');
         }
 
@@ -29,10 +29,11 @@ class EloquentPlugin implements AdapterInterface
     /**
      * @param $item
      * @return int
+     * @throws \UnexpectedValueException
      */
     public function Create($item)
     {
-        if (!is_object($item)) {
+        if (!\is_object($item)) {
             throw new \UnexpectedValueException('$item is not an object');
         }
 
@@ -74,7 +75,7 @@ class EloquentPlugin implements AdapterInterface
             throw new \UnexpectedValueException('$column_name not set');
         }
 
-        return $this->query->select()->where([$this->column_name], $string)->get();
+        return $this->query->select()->where($this->column_name, $string)->get();
     }
 
     public function SetGetByStringColumn($column_name) {
@@ -83,6 +84,6 @@ class EloquentPlugin implements AdapterInterface
 
     public function Type()
     {
-        return get_class($this);
+        return \get_class($this);
     }
 }
