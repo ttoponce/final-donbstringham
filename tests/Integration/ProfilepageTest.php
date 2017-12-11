@@ -14,6 +14,7 @@ class ProfilepageTest extends BaseTestCase
 
     public function testPostLoginpageSuccess00()
     {
+        $this->withMiddleware = false;
         $response = $this->runApp('POST', '/profile', ['f_username' => 'anne@example.com', 'f_password' => '1234pass']);
 
         $this->assertEquals(200, $response->getStatusCode());
@@ -23,6 +24,7 @@ class ProfilepageTest extends BaseTestCase
 
     public function testPostLoginpageSuccess01()
     {
+        $this->withMiddleware = false;
         $response = $this->runApp('POST', '/profile', ['f_username' => 'ben@example.com', 'f_password' => '1234pass']);
 
         $this->assertEquals(200, $response->getStatusCode());
@@ -32,6 +34,7 @@ class ProfilepageTest extends BaseTestCase
 
     public function testPostLoginpageSuccess02()
     {
+        $this->withMiddleware = false;
         $response = $this->runApp('POST', '/profile', ['f_username' => 'chris@example.com', 'f_password' => '1234pass']);
 
         $this->assertEquals(200, $response->getStatusCode());

@@ -70,15 +70,26 @@ $container['phpErrorHandler'] = function ($c) {
 
 // Register globally to app
 $container['session'] = function ($c) {
-    return new \SlimSession\Helper;
+    $s = new \App\Storage\Session();
+    return $s::init(new \App\Storage\PhpSessionAdapter());
+};
+
+$container['mock-session'] = function ($c) {
+    $s = new \App\Storage\Session();
+    return $s::init(new \App\Storage\MemSessionAdapter());
+};
+
+$container['slim-session'] = function ($c) {
+    $s = new \App\Storage\Session();
+    return $s::init(new \App\Storage\SlimSessionAdapter());
 };
 
 // classes/objects
-$container[App\Actions\HomeAction::class] = function ($c) {
+$container[\App\Actions\HomeAction::class] = function ($c) {
     return new \App\Actions\HomeAction($c->get('view'), $c->get('logger'));
 };
 
-$container[App\Actions\ProfileAction::class] = function ($c) {
+$container[\App\Actions\ProfileAction::class] = function ($c) {
     $view = $c->get('view');
     $logger = $c->get('logger');
     $table = $c->get('db')->table('users');
@@ -86,19 +97,19 @@ $container[App\Actions\ProfileAction::class] = function ($c) {
     return new \App\Actions\ProfileAction($view, $logger, $table);
 };
 
-$container[App\Storage\MemoryPlugin::class] = function ($c) {
-    return new App\Storage\MemoryPlugin();
+$container[\App\Storage\MemoryPlugin::class] = function ($c) {
+    return new \App\Storage\MemoryPlugin();
 };
 
-$container[App\Storage\UserRepository::class . 'Eloquent'] = function ($c) {
+$container[\App\Storage\UserRepository::class . 'Eloquent'] = function ($c) {
     $builder = $c->get('db')->table('users');
-    $adapter = new App\Storage\EloquentPlugin($builder);
+    $adapter = new \App\Storage\EloquentPlugin($builder);
 
-    return new App\Storage\UserRepository($adapter);
+    return new \App\Storage\UserRepository($adapter);
 };
 
-$container[App\Storage\UserRepository::class . 'Mem'] = function ($c) {
-    $adapter = $c->get(App\Storage\MemoryPlugin::class);
+$container[\App\Storage\UserRepository::class . 'Mem'] = function ($c) {
+    $adapter = $c->get(\App\Storage\MemoryPlugin::class);
 
-    return new App\Storage\UserRepository($adapter);
+    return new \App\Storage\UserRepository($adapter);
 };

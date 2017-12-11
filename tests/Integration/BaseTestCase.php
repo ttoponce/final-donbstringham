@@ -20,7 +20,7 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
      *
      * @var bool
      */
-    protected $withMiddleware = true;
+    protected $withMiddleware = false;
 
     /**
      * Process the application given a request method and URI
@@ -63,7 +63,17 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
 
         // Register middleware
         if ($this->withMiddleware) {
-            require __DIR__ . '/../../src/middleware.php';
+            //require __DIR__ . '/../../src/middleware.php';
+            $m = new \App\Storage\Session();
+            $m::init(new \App\Storage\MemSessionAdapter);
+
+            $c = $app->getContainer();
+
+            $app->add(new \App\Middleware\PasswordAuthentication(
+                $c->get('logger'),
+                $m,
+                $c->get(\App\Storage\UserRepository::class . 'Eloquent')
+            ));
         }
 
         // Register routes

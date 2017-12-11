@@ -35,7 +35,7 @@ class ProfileAction
         $user = $this->table->where('email', $args['f_username'])->first();
 
         // No user in the database with this username
-        if ($user === null) {
+        if ($user === null || empty($user)) {
             return $this->view->render($response, 'profile.html.twig', []);
         }
 

@@ -17,14 +17,14 @@ class PasswordAuthentication
     protected $log;
     /** @var \App\Storage\UserRepository $repo */
     protected $repo;
-    /** @var \SlimSession\Helper */
+    /** @var \App\Storage\SessionAdapter $sess */
     protected $sess;
 
     public function __construct($logger, $session, $repository)
     {
         $this->log = $logger;
-        $this->repo = $repository;
         $this->sess = $session;
+        $this->repo = $repository;
     }
 
     /**
@@ -39,8 +39,7 @@ class PasswordAuthentication
     public function __invoke($request, $response, $next)
     {
         $this->log->info('*** BEGIN ' . __METHOD__);
-        session_start();
-        var_dump($_SESSION);
+        $userId = $this->sess->get('web4350_session');
         if($this->sess->exists('web4350_session')) {
             $this->log->info('*** IN ' . __METHOD__ . ' found session cookie?');
             $id = $this->sess->get('web4350_session');

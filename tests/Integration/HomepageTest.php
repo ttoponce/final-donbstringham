@@ -24,6 +24,7 @@ class HomepageTest extends BaseTestCase
      */
     public function testPostHomepageNotAllowed()
     {
+        $this->withMiddleware = false;
         $response = $this->runApp('POST', '/', ['test']);
 
         $this->assertEquals(405, $response->getStatusCode());
